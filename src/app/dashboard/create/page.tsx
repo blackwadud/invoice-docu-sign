@@ -1,7 +1,6 @@
-// src/app/dashboard/create/page.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { db, storage } from '@/lib/firebase';
 import { doc, setDoc } from 'firebase/firestore';
@@ -23,7 +22,7 @@ export default function CreateInvoicePage() {
     e.preventDefault();
     if (loading || !user) return;
 
-    // Prevent self‑assignment
+    // Prevent assigning to self
     if (user.email?.toLowerCase() === signerEmail.trim().toLowerCase()) {
       alert("You can't assign an invoice to yourself.");
       return;
@@ -40,12 +39,12 @@ export default function CreateInvoicePage() {
         description,
       });
 
-      // 2️⃣ Upload PDF to Firebase Storage
+      // 2️⃣ Upload PDF to Storage
       const fileRef = ref(storage, `documents/${docId}.pdf`);
       await uploadBytes(fileRef, pdfBlob);
       const fileUrl = await getDownloadURL(fileRef);
 
-      // 3️⃣ Write Firestore metadata
+      // 3️⃣ Write Firestore metadata (triggers email Cloud Function)
       await setDoc(doc(db, 'documents', docId), {
         id: docId,
         uploadedBy: user.uid,
@@ -58,8 +57,8 @@ export default function CreateInvoicePage() {
         status: 'pending',
       });
 
-      alert('Invoice created—signer will receive an email shortly.');
-      router.push('/dashboard/sign-requests');
+      alert('Invoice created — signer will receive an email shortly.');
+      router.push('/dashboard/sent'); // ← redirect to Outbound
     } catch (err: any) {
       console.error(err);
       alert('Failed to create invoice: ' + err.message);
@@ -68,7 +67,9 @@ export default function CreateInvoicePage() {
     }
   };
 
-  if (loading) return <p className="p-4">Loading…</p>;
+  if (loading) {
+    return <p className="p-4 text-center">Loading…</p>;
+  }
 
   return (
     <div className="max-w-lg mx-auto mt-10 bg-white border border-gray-300 p-6 rounded-lg shadow-md">
@@ -108,7 +109,9 @@ export default function CreateInvoicePage() {
           type="submit"
           disabled={creating}
           className={`w-full py-2 px-4 font-semibold rounded text-white ${
-            creating ? 'bg-gray-500 cursor-not-allowed' : 'bg-black hover:bg-gray-800'
+            creating
+              ? 'bg-gray-500 cursor-not-allowed'
+              : 'bg-black hover:bg-gray-800'
           } transition`}
         >
           {creating ? 'Creating…' : 'Send Invoice for Signature'}
