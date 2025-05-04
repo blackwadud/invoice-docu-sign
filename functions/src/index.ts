@@ -43,7 +43,7 @@ export const sendSignRequest = functions.firestore
     const { id, signerEmail, signerName, uploadedByEmail, description } =
       data as DocData;
 
-    const link = `http://localhost:3000/sign/${id}`;
+    const link = `https://income-sign.vercel.app/sign/${id}`;
     const html = `
       <p>Hello ${signerName || ''},</p>
       <p><b>${uploadedByEmail}</b> has sent you an invoice to sign.</p>
