@@ -1,0 +1,7 @@
+# ignore compiled output
+lib/
+generated/
+
+# ignore config files
+.eslintrc.js
+eslint.config.cjs
