@@ -171,23 +171,6 @@ classDiagram
   EmailStrategy <|.. SmtpEmail
 ```
 
-### Component Diagram
-
-```mermaid
-flowchart TB
-  subgraph Frontend
-    A[CreateInvoicePage] --> B[InvoiceForm]
-    B --> C[FileUploader]
-    B --> D[RecipientSelect]
-    E[SignPage] --> F[PdfViewer]
-  end
-  subgraph Backend
-    G[/api/invoices] --> H[Firestore]
-    I[sendSignRequest] --> J[Nodemailer]
-  end
-  A --> G
-  S-->E
-```
 
 ## 10. Pseudocode Snippets
 
@@ -243,6 +226,3 @@ FUNCTIONS_DOMAIN=https://income-sign.vercel.app
 * **Functions** via Firebase CLI: `firebase deploy --only functions`
 * Set prod env-vars in Vercel & `functions.config()`
 
-## 15. License
-
-MIT © Your Name
