@@ -24,7 +24,7 @@
 
 ## 1. Project Link
 
-* **GitHub Repo:** [https://github.com/Big-Mojos-Projects/income-sign](https://github.com/Big-Mojos-Projects/income-sign)
+* **GitHub Repo:** [https://github.com/blackwadud/invoice-docu-sign](https://github.com/blackwadud/invoice-docu-sign)
 * **Live Demo:** [https://income-sign.vercel.app](https://income-sign.vercel.app)
 
 ## 2. Project Overview
